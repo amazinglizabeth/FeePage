@@ -1,11 +1,11 @@
 import Header from "@/components/Header";
-import Hero from "@/components/hero";
-import FeeStructure from "@/components/fee-structure";
-import ExchangeCalculator from "@/components/exchange-calculator";
-import WhereYourFeesGo from "@/components/where-your-fees-go";
-import FAQ from "@/components/faq";
-import Referrals from "@/components/referrals";
-import CTA from "@/components/cta";
+import Hero from "@/components/Hero";
+import FeeStructure from "@/components/FeeStructure";
+import ExchangeCalculator from "@/components/ExchangeCalculator";
+import WhereYourFeesGo from "@/components/WhereYourFeesGo";
+import FAQ from "@/components/FAQ";
+import Referrals from "@/components/Referrals";
+import CTA from "@/components/CTA";
 
 export default function App() {
   return (
