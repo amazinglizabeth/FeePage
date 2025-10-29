@@ -1,4 +1,4 @@
-function Footer() {
+export default function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-400 py-8 px-4">
       <div className="max-w-6xl mx-auto text-center">

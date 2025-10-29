@@ -1,4 +1,4 @@
-function Referrals() {
+export default function Referrals() {
   const referralLinks = [
     "VitalSwap.com?ref=LYD10667",
     "VitalSwap.com?ref=TAI05635",

@@ -1,4 +1,4 @@
-function ExchangeCalculator() {
+export default function ExchangeCalculator() {
   const [amount, setAmount] = useState("1000");
   const exchangeRate = 0.98;
   const fee = Number.parseFloat(amount) * 0.02;

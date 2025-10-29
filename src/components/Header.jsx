@@ -1,4 +1,4 @@
-function Header() {
+export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (

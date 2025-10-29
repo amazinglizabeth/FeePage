@@ -1,4 +1,4 @@
-function FAQ() {
+export default function FAQ() {
   const [openIndex, setOpenIndex] = useState(0);
 
   const faqs = [

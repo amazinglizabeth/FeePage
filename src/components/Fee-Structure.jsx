@@ -1,4 +1,4 @@
-function FeeStructure() {
+export default function FeeStructure() {
   const fees = [
     {
       title: "Standard Fee",
