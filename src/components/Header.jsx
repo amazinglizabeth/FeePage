@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
+
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -5,13 +8,15 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
         <div className="flex justify-between items-center">
+          {/* Logo Section */}
           <div className="flex items-center gap-2">
             <div className="w-9 h-9 bg-linear-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center shadow-sm">
-              <span className="text-white font-bold text-lg"></span>
+              <span className="text-white font-bold text-lg">V</span>
             </div>
             <span className="font-bold text-xl text-gray-900">VitalSwap</span>
           </div>
 
+          {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             <a
               href="#features"
@@ -39,6 +44,7 @@ export default function Header() {
             </a>
           </div>
 
+          {/* Desktop Buttons */}
           <div className="hidden md:flex items-center gap-3">
             <button className="text-gray-700 hover:text-gray-900 text-sm font-medium px-4 py-2 transition">
               Sign in
@@ -48,14 +54,16 @@ export default function Header() {
             </button>
           </div>
 
+          {/* Mobile Menu Button */}
           <button
             className="md:hidden text-gray-700"
             onClick={() => setIsOpen(!isOpen)}
           >
-            {isOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
 
+        {/* Mobile Dropdown */}
         {isOpen && (
           <div className="md:hidden mt-4 pb-4 space-y-3 border-t pt-4">
             <a
@@ -82,6 +90,7 @@ export default function Header() {
             >
               FAQs
             </a>
+
             <div className="flex gap-2 pt-2">
               <button className="flex-1 text-gray-700 border border-gray-300 rounded-lg py-2 text-sm font-medium">
                 Sign in

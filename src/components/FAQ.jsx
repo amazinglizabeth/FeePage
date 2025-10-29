@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState(0);
 

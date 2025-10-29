@@ -1,3 +1,5 @@
+import { FaCopy } from "react-icons/fa";
+
 export default function Referrals() {
   const referralLinks = [
     "VitalSwap.com?ref=LYD10667",

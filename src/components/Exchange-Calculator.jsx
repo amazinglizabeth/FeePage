@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 export default function ExchangeCalculator() {
   const [amount, setAmount] = useState("1000");
   const exchangeRate = 0.98;
