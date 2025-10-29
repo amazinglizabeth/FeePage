@@ -1,4 +1,4 @@
-export default function CTA() {
+export default function Cta() {
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 bg-linear-to-br from-blue-600 to-blue-700">
       <div className="max-w-4xl mx-auto text-center">
