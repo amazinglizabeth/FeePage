@@ -59,12 +59,17 @@ export default function Header() {
               </a>
             ))}
             <div className="flex flex-col gap-2 pt-3">
-              <button className="w-full py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md">
+              <a href="https://business.vitalswap.com/signin">
+           <button className="w-full py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md">
                 Sign in
               </button>
-              <button className="w-full py-2 text-sm font-semibold text-white bg-[#2563EB] rounded-md hover:bg-[#1E40AF] transition-all">
+          </a>
+               <a href="https://business.vitalswap.com/signup">
+           <button className="w-full py-2 text-sm font-semibold text-white bg-[#2563EB] rounded-md hover:bg-[#1E40AF] transition-all">
                 Get started
               </button>
+          </a>
+              
             </div>
           </div>
         )}
