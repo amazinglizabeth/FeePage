@@ -22,7 +22,7 @@ export default function Footer() {
             </button>
           </a>
           <a href="#calculator">
-            <button className=" border border-white hover:border-gray-100 text-white font-bold py-3 px-8 rounded-xl text-sm transition-all shadow-sm hover:shadow-md">
+            <button className=" border border-white hover:border-gray-200 text-white font-bold py-3 px-8 rounded-xl text-sm transition-all shadow-sm hover:shadow-md">
               View Exchange Rates
             </button>
           </a>
