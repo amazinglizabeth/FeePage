@@ -10,7 +10,7 @@ export default function ExchangeCalculator() {
 
   // Fetch exchange rates from backend API
   useEffect(() => {
-    fetch("https://your-backend-domain.com/api/fees")
+    fetch("https://2kbbumlxz3.execute-api.us-east-1.amazonaws.com/default/exchange?from=USD&to=NGN")
       .then((res) => res.json())
       .then((data) => {
         setRates(data);
