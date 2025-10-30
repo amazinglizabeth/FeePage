@@ -1,22 +1,46 @@
+import ATFlag from "../assets/icons/at.png";
+import QAFlag from "../assets/icons/qa.png";
+import MXFlag from "../assets/icons/ng.png";
+import USFlag from "../assets/icons/us.png";
+
 export default function Hero() {
+  const countries = [
+    { code: "AT", img: ATFlag },
+    { code: "QA", img: QAFlag },
+    { code: "MX", img: MXFlag },
+    { code: "US", img: USFlag },
+  ];
+
   return (
-    <section className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-8 bg-linear-to-b from-white to-gray-50">
-      <div className="max-w-4xl mx-auto text-center">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 mb-5 leading-tight">
-          Simple transparent pricing for
-          <br />
+    <section className="bg-gradient-to-b from-[#F8FAFC] to-white py-24 sm:py-28 md:py-32 px-4 sm:px-6 lg:px-8 text-center">
+      <div className="max-w-4xl mx-auto">
+        {/* Headline */}
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
+          Simple transparent pricing for{" "}
           <span className="text-blue-600">Every Swap</span>
         </h1>
-        <p className="text-gray-600 text-base sm:text-lg mb-10 max-w-2xl mx-auto leading-relaxed">
-          No hidden fees. No surprises. Just simple, transparent pricing that
-          lets you know exactly what you're paying.
+
+        {/* Subtext */}
+        <p className="text-gray-600 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed mb-12">
+          At <span className="font-semibold text-gray-800">VitalSwap</span>, we
+          believe in complete transparency. Know exactly what you will pay
+          before you swap, with competitive rates and no surprises.
         </p>
 
-        <div className="flex justify-center gap-3 mb-4">
-          <div className="w-12 h-8 bg-linear-to-br from-red-500 to-red-600 rounded shadow-sm"></div>
-          <div className="w-12 h-8 bg-linear-to-br from-orange-400 to-orange-500 rounded shadow-sm"></div>
-          <div className="w-12 h-8 bg-linear-to-br from-green-500 to-green-600 rounded shadow-sm"></div>
-          <div className="w-12 h-8 bg-linear-to-br from-blue-500 to-blue-600 rounded shadow-sm"></div>
+        {/* Country Flags */}
+        <div className="flex justify-center gap-6 sm:gap-8 flex-wrap bg-slate-100/80 backdrop-blur-sm py-5 px-4">
+          {countries.map(({ code, img }) => (
+            <div
+              key={code}
+              className="w-12 h-8 sm:w-14 sm:h-9 bg-gray-100 rounded-lg shadow-sm flex items-center justify-center overflow-hidden border border-gray-200 hover:scale-105 hover:shadow-md transition-transform duration-300"
+            >
+              <img
+                src={img}
+                alt={`${code} flag`}
+                className="object-cover w-full h-full rounded-md"
+              />
+            </div>
+          ))}
         </div>
       </div>
     </section>

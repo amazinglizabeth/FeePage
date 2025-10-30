@@ -1,9 +1,12 @@
 export default function WhereYourFeesGo() {
   return (
-    <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-white">
+    <section
+      id="pricing"
+      className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-white"
+    >
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-14">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
+          <h2 className="text-3xl sm:text-4xl font-bold text-blue-800 mb-3">
             Where Your Fees Go
           </h2>
           <p className="text-gray-600 text-base">

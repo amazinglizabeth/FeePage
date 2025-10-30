@@ -5,40 +5,40 @@ export default function FAQ() {
 
   const faqs = [
     {
-      question: "What are the exchange fees?",
+      question: "Why does the exchange rate vary?",
       answer:
-        "Our exchange fees vary based on your trading volume and account tier. Standard fees start at 2% and decrease with higher volumes.",
+        "Exchange rate fluctuates based on market condition, we update our rate in real-time.",
     },
     {
-      question: "Is my transaction secure?",
+      question: "Do you charge hidden fees?",
       answer:
-        "Yes, we use industry-leading encryption and security protocols to protect all transactions and personal information.",
+        "No, we believe in complete transparency. All fees are clearly displayed before transactions",
     },
     {
-      question: "How long does the exchange take?",
+      question: "How can I reduce my exchange fees?",
       answer:
-        "Most exchanges are completed within 5-10 minutes. However, network conditions may affect processing times.",
+        "You can reduce fees by holding VITAL tokens. token holders receive a 50% discount on all transactions",
+    },
+    {
+      question: "How long does currency exchange take?",
+      answer:
+        "Most exchanges are processed instantly. Bank transfer typically takes 1-3 business days.",
     },
     {
       question: "What are the minimum and maximum exchange limits?",
       answer:
-        "Minimum exchange is $10 and maximum depends on your verification level, ranging from $1,000 to $100,000 per transaction.",
-    },
-    {
-      question: "What if the exchange rate changes during my transaction?",
-      answer:
-        "The rate is locked for 2 minutes once you initiate a transaction, protecting you from rate fluctuations.",
+        "Minimum exchange is $10USD equivalent. minimum limits depends on your account verification.",
     },
   ];
 
   return (
     <section
-      id="faq"
+      id="faqs"
       className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-gray-50"
     >
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-14">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
+          <h2 className="text-3xl sm:text-4xl font-bold text-blue-800 mb-3">
             Frequently Asked Questions
           </h2>
           <p className="text-gray-600 text-base">
