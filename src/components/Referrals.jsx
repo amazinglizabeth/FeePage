@@ -2,22 +2,38 @@ import { useState } from "react";
 
 export default function Referrals() {
   const referralLinks = [
-    "Vitalswap.com/ref/ebarim",
-    "Vitalswap.com/ref/caramel",
-    "Vitalswap.com/ref/taiwo",
-    "Vitalswap.com/ref/lideeyah",
+    {
+      display: "Vitalswap.com/ref/ebarim",
+      url: "https://app.vitalswap.com?r=EBAR0867",
+    },
+    {
+      display: "Vitalswap.com/ref/caramel",
+      url: "https://app.vitalswap.com?r=ADEN7506",
+    },
+    {
+      display: "Vitalswap.com/ref/taiwo",
+      url: "https://app.vitalswap.com?r=TAIW5635",
+    },
+    {
+      display: "Vitalswap.com/ref/lideeyah",
+      url: "https://app.vitalswap.com?r=LYDI0667",
+    },
   ];
 
   const [copiedIndex, setCopiedIndex] = useState(null);
 
   const copyToClipboard = (link, index) => {
-    navigator.clipboard.writeText(link);
+    navigator.clipboard.writeText(link.url);
     setCopiedIndex(index);
 
     // Hide the "Copied" text after 2 seconds
     setTimeout(() => {
       setCopiedIndex(null);
     }, 2000);
+  };
+
+  const handleLinkClick = (url) => {
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   return (
@@ -48,11 +64,14 @@ export default function Referrals() {
                 </div>
               )}
 
-              {/* Referral Link */}
+              {/* Clickable Referral Link */}
               <div className="mb-4">
-                <p className="text-md font-bold text-black break-all mb-3">
-                  {link}
-                </p>
+                <button
+                  onClick={() => handleLinkClick(link.url)}
+                  className="underline text-md font-md text-blue-600 hover:font-bold break-all mb-3 cursor-pointer text-left w-full rounded p-1 "
+                >
+                  {link.display}
+                </button>
               </div>
 
               {/* Copy Button */}

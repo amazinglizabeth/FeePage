@@ -6,7 +6,10 @@ const ResultCard = ({ data }) => {
   const { industry, businessType } = data;
 
   return (
-    <div className="bg-[#0A0A23] text-white rounded-2xl shadow-lg p-6 space-y-4">
+    <div
+      id="result"
+      className="bg-[#0A0A23] text-white rounded-2xl shadow-lg p-6 space-y-4"
+    >
       <h3 className="text-lg font-semibold flex items-center gap-2">
         <FaMoneyBillWave className="text-[#FFD700]" />
         Estimated Breakdown

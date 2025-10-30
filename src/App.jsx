@@ -5,6 +5,7 @@ import ExchangeCalculator from "@/components/Exchange-Calculator.jsx";
 import WhereYourFeesGo from "@/components/Where-your-fees-go.jsx";
 import FAQ from "@/components/FAQ.jsx";
 import Referrals from "@/components/Referrals.jsx";
+import Cta from "@/components/Cta.jsx";
 import Footer from "@/components/Footer.jsx";
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
       <WhereYourFeesGo />
       <FAQ />
       <Referrals />
+      <Cta />
       <Footer />
     </div>
   );
