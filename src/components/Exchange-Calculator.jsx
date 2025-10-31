@@ -1,19 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function ExchangeCalculator() {
   const [amount, setAmount] = useState("");
   const [fromCurrency, setFromCurrency] = useState("NGN");
   const [toCurrency, setToCurrency] = useState("USD");
   const [holdVital, setHoldVital] = useState(false);
+  const [rates, setRates] = useState({});
+  const [loadingRates, setLoadingRates] = useState(true); // Track loading
 
-  // Example exchange rates (you can replace with live API later)
-  const rates = {
-    NGN: { USD: 0.0012, EUR: 0.0011 },
-    USD: { NGN: 1600, EUR: 0.93 },
-    EUR: { NGN: 1700, USD: 1.08 },
-  };
+  // Fetch exchange rates from backend API
+  useEffect(() => {
+    fetch("https://2kbbumlxz3.execute-api.us-east-1.amazonaws.com/default/exchange?from=USD&to=NGN") //"https://swaptag-backend.onrender.com"
+      .then((res) => res.json())
+      .then((data) => {
+        setRates(data);
+        setLoadingRates(false); // API call completed
+      })
+      .catch((err) => {
+        console.error("Failed to fetch rates:", err);
+        setLoadingRates(false);
+      });
+  }, []);
 
-  const exchangeRate = rates[fromCurrency]?.[toCurrency] || 1;
+  // Use backend rates or fallback
+  const exchangeRate = !loadingRates
+    ? rates[fromCurrency]?.[toCurrency] || 1
+    : 1; // Fallback to 1 while loading
 
   // Calculate fee and total
   const rawAmount = parseFloat(amount) || 0;
@@ -22,10 +34,7 @@ export default function ExchangeCalculator() {
   const received = (rawAmount - fee) * exchangeRate;
 
   return (
-    <section
-      id="calculator"
-      className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-indigo-50"
-    >
+    <section id="calculator" className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-indigo-50">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
@@ -47,15 +56,13 @@ export default function ExchangeCalculator() {
                   <h3 className="text-xl font-bold text-gray-800 mb-4">
                     Amount to Exchange
                   </h3>
-                  <div className="relative">
-                    <input
-                      type="number"
-                      value={amount}
-                      onChange={(e) => setAmount(e.target.value)}
-                      placeholder="Enter amount"
-                      className="w-full px-5 py-4 text-lg border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                    />
-                  </div>
+                  <input
+                    type="number"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    placeholder="Enter amount"
+                    className="w-full px-5 py-4 text-lg border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                  />
                 </div>
 
                 <div className="mb-8">
@@ -63,67 +70,25 @@ export default function ExchangeCalculator() {
                     Currency Selection
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        From Currency
-                      </label>
-                      <div className="relative">
-                        <select
-                          value={fromCurrency}
-                          onChange={(e) => setFromCurrency(e.target.value)}
-                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
-                        >
-                          <option value="NGN">Nigerian Naira (₦)</option>
-                          <option value="USD">US Dollar ($)</option>
-                          <option value="EUR">Euro (€)</option>
-                        </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                          <svg
-                            className="h-4 w-4"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
+                    <select
+                      value={fromCurrency}
+                      onChange={(e) => setFromCurrency(e.target.value)}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                      <option value="NGN">Nigerian Naira (₦)</option>
+                      <option value="USD">US Dollar ($)</option>
+                      <option value="EUR">Euro (€)</option>
+                    </select>
 
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        To Currency
-                      </label>
-                      <div className="relative">
-                        <select
-                          value={toCurrency}
-                          onChange={(e) => setToCurrency(e.target.value)}
-                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 appearance-none bg-white"
-                        >
-                          <option value="USD">US Dollar ($)</option>
-                          <option value="NGN">Nigerian Naira (₦)</option>
-                          <option value="EUR">Euro (€)</option>
-                        </select>
-                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                          <svg
-                            className="h-4 w-4"
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                              clipRule="evenodd"
-                            />
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
+                    <select
+                      value={toCurrency}
+                      onChange={(e) => setToCurrency(e.target.value)}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    >
+                      <option value="USD">US Dollar ($)</option>
+                      <option value="NGN">Nigerian Naira (₦)</option>
+                      <option value="EUR">Euro (€)</option>
+                    </select>
                   </div>
                 </div>
 
@@ -150,43 +115,34 @@ export default function ExchangeCalculator() {
                     Exchange Summary
                   </h3>
 
-                  <div className="space-y-4 mb-6">
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-700">Exchange Rate:</span>
-                      <span className="font-semibold text-blue-700">
-                        1 {fromCurrency} = {exchangeRate.toFixed(6)}{" "}
-                        {toCurrency}
-                      </span>
-                    </div>
-
-                    <div className="flex justify-between items-center">
-                      <span className="text-gray-700">Exchange Fee:</span>
-                      <span className="font-semibold text-blue-600">
-                        {fromCurrency === "NGN"
-                          ? "₦"
-                          : fromCurrency === "USD"
-                          ? "$"
-                          : "€"}
-                        {fee.toFixed(2)}
-                      </span>
-                    </div>
-
-                    <div className="pt-4 border-t border-blue-200">
+                  {loadingRates ? (
+                    <p className="text-gray-500">Loading rates...</p>
+                  ) : (
+                    <div className="space-y-4 mb-6">
                       <div className="flex justify-between items-center">
-                        <span className="text-lg font-bold text-gray-800">
-                          You'll Receive:
-                        </span>
-                        <span className="text-2xl font-bold text-green-600">
-                          {toCurrency === "NGN"
-                            ? "₦"
-                            : toCurrency === "USD"
-                            ? "$"
-                            : "€"}
-                          {received.toFixed(2)}
+                        <span className="text-gray-700">Exchange Rate:</span>
+                        <span className="font-semibold text-blue-700">
+                          1 {fromCurrency} = {exchangeRate.toFixed(6)} {toCurrency}
                         </span>
                       </div>
+                      <div className="flex justify-between items-center">
+                        <span className="text-gray-700">Exchange Fee:</span>
+                        <span className="font-semibold text-blue-600">
+                          {fromCurrency === "NGN" ? "₦" : fromCurrency === "USD" ? "$" : "€"}
+                          {fee.toFixed(2)}
+                        </span>
+                      </div>
+                      <div className="pt-4 border-t border-blue-200">
+                        <div className="flex justify-between items-center">
+                          <span className="text-lg font-bold text-gray-800">You'll Receive:</span>
+                          <span className="text-2xl font-bold text-green-600">
+                            {toCurrency === "NGN" ? "₦" : toCurrency === "USD" ? "$" : "€"}
+                            {received.toFixed(2)}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   <p className="text-xs text-gray-500 italic mt-6 pt-4 border-t border-blue-100">
                     *Amounts may vary slightly based on market conditions
