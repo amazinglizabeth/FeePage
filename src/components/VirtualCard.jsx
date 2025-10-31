@@ -1,9 +1,9 @@
-export default function VitualCard() {
-  <div></div>;
-}
+//export default function VitualCard() {
+  //<div></div>;
+//}
 import React from "react";
 
-export default function VitalSwapCard() {
+export default function VirtualCard() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4">
       {/* Title */}
