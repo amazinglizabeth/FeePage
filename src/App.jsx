@@ -8,7 +8,7 @@ import FAQ from "@/components/FAQ.jsx";
 import Referrals from "@/components/Referrals.jsx";
 import Testimonials from "@/components/Testimonials.jsx";
 import TrustLogo from "@/components/TrustLogo.jsx";
-//import Openchat from "@/components/Openchat.jsx";
+import Openchat from "@/components/Openchat.jsx";
 import Cta from "@/components/Cta.jsx";
 import Footer from "@/components/Footer.jsx";
 
@@ -25,7 +25,7 @@ export default function App() {
       <Referrals />
       <Testimonials />
       <TrustLogo />
-      //<Openchat />
+      <Openchat />
       <Cta />
       <Footer />
     </div>
