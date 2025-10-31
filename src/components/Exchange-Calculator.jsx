@@ -25,7 +25,7 @@ export default function ExchangeCalculator() {
   // Use backend rates or fallback
   const exchangeRate = !loadingRates
     ? rates[fromCurrency]?.[toCurrency] || 1
-    : 1500; // Fallback to 1 while loading
+    : 1; // Fallback to 1 while loading
 
   // Calculate fee and total
   const rawAmount = parseFloat(amount) || 0;

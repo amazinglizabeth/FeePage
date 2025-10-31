@@ -5,8 +5,8 @@ export default function ChatterBox() {
   const [chat, setChat] = useState([
     {
       sender: "bot",
-      text: "Hello! I'm your currency exchange assistant. I can help you with exchange rates, currency conversions, and answer questions about foreign exchange. Try asking me something like 'Convert 100 USD to EUR' or 'What's the exchange rate for GBP?'"
-    }
+      text: "Hello! I'm your currency exchange assistant. I can help you with exchange rates, currency conversions, and answer questions about foreign exchange. Try asking me something like 'Convert 100 USD to EUR' or 'What's the exchange rate for GBP?'",
+    },
   ]);
 
   const handleSend = async () => {
@@ -19,14 +19,20 @@ export default function ChatterBox() {
       const res = await fetch("https://swaptagbackend.onrender.com/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: message })
+        body: JSON.stringify({ query: message }),
       });
 
       const data = await res.json();
-      const botMsg = { sender: "bot", text: data.response || "I couldn't process that." };
+      const botMsg = {
+        sender: "bot",
+        text: data.response || "I couldn't process that.",
+      };
       setChat((prev) => [...prev, botMsg]);
     } catch (error) {
-      const botMsg = { sender: "bot", text: "Network error. Please try again." };
+      const botMsg = {
+        sender: "bot",
+        text: "Network error. Please try again.",
+      };
       setChat((prev) => [...prev, botMsg]);
     }
 
@@ -72,4 +78,3 @@ export default function ChatterBox() {
     </div>
   );
 }
-
