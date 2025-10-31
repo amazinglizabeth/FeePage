@@ -10,7 +10,7 @@ export default function ExchangeCalculator() {
 
   // Fetch exchange rates from backend API
   useEffect(() => {
-    fetch("https://2kbbumlxz3.execute-api.us-east-1.amazonaws.com/default/exchange?from=USD&to=NGN") //"https://swaptag-backend.onrender.com"
+    fetch("https://2kbbumlxz3.execute-api.us-east-1.amazonaws.com/default/exchange?from=USD&to=NGN")
       .then((res) => res.json())
       .then((data) => {
         setRates(data);
@@ -25,7 +25,7 @@ export default function ExchangeCalculator() {
   // Use backend rates or fallback
   const exchangeRate = !loadingRates
     ? rates[fromCurrency]?.[toCurrency] || 1
-    : 1; // Fallback to 1 while loading
+    : 1500; // Fallback to 1 while loading
 
   // Calculate fee and total
   const rawAmount = parseFloat(amount) || 0;
