@@ -91,20 +91,4 @@ export default function Openchat() {
   );
 }
 
-//export default function Openchat() {
-// send message
-async function sendChat(msg, swapTag) {
-    const res = await fetch("https://your-backend.com/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: msg, swap_tag: swapTag })
-    });
-    return res.json();
-  }
-  
-  // get history
-  async function getHistory(swapTag) {
-    const res = await fetch(`https://your-backend.com/api/chat/history?swap_tag=${encodeURIComponent(swapTag)}`);
-    return res.json();
-  }
-//}
+
