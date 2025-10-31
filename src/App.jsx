@@ -19,13 +19,13 @@ export default function App() {
       <Hero />
       <FeeStructure />
       <ExchangeCalculator />
-      <VirtualCard/>
+      <VirtualCard />
       <WhereYourFeesGo />
       <FAQ />
       <Referrals />
-      <Testimonials/>
-      <TrustLogo/>
-      <Openchat/>
+      <Testimonials />
+      <TrustLogo />
+      <Openchat />
       <Cta />
       <Footer />
     </div>
