@@ -1,4 +1,4 @@
-import card from "../assets/images/virtualcard.png"
+import virtualcard from "../assets/images/virtualcard.png"
 export default function VirtualCard() {
 
     return (
