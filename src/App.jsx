@@ -2,7 +2,7 @@ import Header from "@/components/Header.jsx";
 import Hero from "@/components/Hero.jsx";
 import FeeStructure from "@/components/Fee-Structure.jsx";
 import ExchangeCalculator from "@/components/Exchange-Calculator.jsx";
-import VirtualCard from "@/components/VirtualCard.jsx";
+import VirtualCard from "@/components/virtualCard.jsx";
 import WhereYourFeesGo from "@/components/Where-your-fees-go.jsx";
 import FAQ from "@/components/FAQ.jsx";
 import Referrals from "@/components/Referrals.jsx";
