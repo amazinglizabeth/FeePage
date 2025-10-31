@@ -9,6 +9,7 @@ import Referrals from "@/components/Referrals.jsx";
 import Testimonials from "@/components/Testimonials.jsx";
 import TrustLogo from "@/components/TrustLogo.jsx";
 import Cta from "@/components/Cta.jsx";
+import ChatterBox from "@/components/ChatterBox.jsx";
 import Footer from "@/components/Footer.jsx";
 
 export default function App() {
@@ -24,6 +25,7 @@ export default function App() {
       <Referrals />
       <Testimonials />
       <TrustLogo />
+      <ChatterBox />
       <Cta />
       <Footer />
     </div>
