@@ -6,7 +6,11 @@ import WhereYourFeesGo from "@/components/Where-your-fees-go.jsx";
 import FAQ from "@/components/FAQ.jsx";
 import Referrals from "@/components/Referrals.jsx";
 import Cta from "@/components/Cta.jsx";
+import CurrencyExchangeAssistant from "@/components/CurrencyExchangeAssistant.jsx";
 import Footer from "@/components/Footer.jsx";
+import Testimonials from "@/components/Testimonials.jsx";
+import VirtualCard from "@/components/VirtualCard.jsx";
+import TrustLogo from "@/components/TrustLogo.jsx";
 
 export default function App() {
   return (
@@ -14,10 +18,14 @@ export default function App() {
       <Header />
       <Hero />
       <FeeStructure />
+      <TrustLogo />
       <ExchangeCalculator />
+      <VirtualCard />
       <WhereYourFeesGo />
       <FAQ />
       <Referrals />
+      <Testimonials />
+      <CurrencyExchangeAssistant />
       <Cta />
       <Footer />
     </div>
