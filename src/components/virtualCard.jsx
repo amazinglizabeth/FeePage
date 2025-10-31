@@ -2,7 +2,7 @@ import virtualcard from "../assets/images/virtualcard.png"
 export default function VirtualCard() {
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4 space-y-6">
           {/* Title */}
           <h1 className="text-2xl md:text-3xl font-bold text-blue-700 mb-8 text-center">
             VitalSwap Virtual Dollar Card
