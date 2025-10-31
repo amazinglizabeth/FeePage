@@ -7,7 +7,7 @@ import WhereYourFeesGo from "@/components/Where-your-fees-go.jsx";
 import FAQ from "@/components/FAQ.jsx";
 import Referrals from "@/components/Referrals.jsx";
 import Testimonials from "@/components/Testimonials";
-import TrustLogo from "./components/TrustLogo";
+import TrustLogo from "@/components/TrustLogo";
 import Openchat from "@/components/Openchat.jsx";
 import Cta from "@/components/Cta.jsx";
 import Footer from "@/components/Footer.jsx";
