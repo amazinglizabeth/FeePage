@@ -30,7 +30,7 @@ export default function FeeStructure() {
   const simulateSwap = async (amount = 100, from = "USD", to = "NGN", swap_tag) => {
     try {
       const response = await fetch(
-        "https://your-backend-domain.com/api/simulate", //"https://swaptag-backend.onrender.com"
+        "https://swaptagbackend.onrender.com/api/simulate",
 
         {
           method: "POST",
