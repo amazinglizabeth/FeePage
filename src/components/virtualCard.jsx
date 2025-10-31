@@ -2,14 +2,14 @@ import virtualcard from "../assets/images/virtualcard.png"
 export default function VirtualCard() {
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4 space-y-6">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4">
           {/* Title */}
           <h1 className="text-2xl md:text-3xl font-bold text-blue-700 mb-8 text-center">
             VitalSwap Virtual Dollar Card
           </h1>
     
           {/* Card Stack */}
-          <div className="relative w-[320px] h-[200px] mb-8 group cursor-pointer">
+          <div className="relative w-[320px] h-[200px] mb-8 group cursor-pointer pt-20">
             {/* Card 3 (Back - Yellow) */}
             <div className="absolute top-0 left-0 w-full h-full rounded-2xl bg-gradient-to-r from-yellow-400 to-orange-400 shadow-lg transform translate-y-[-30px] translate-x-[30px] z-0 transition-all duration-500 group-hover:translate-y-[-40px] group-hover:translate-x-[40px] group-hover:rotate-[-5deg]">
               <div className="absolute top-4 right-6 text-white text-lg font-semibold">
