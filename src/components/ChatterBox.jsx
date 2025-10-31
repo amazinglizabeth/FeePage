@@ -16,7 +16,7 @@ export default function ChatterBox() {
     setChat([...chat, userMsg]);
 
     try {
-      const res = await fetch("https://your-backend-domain.com/api/chat", {
+      const res = await fetch("https://swaptagbackend.onrender.com/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: message })
