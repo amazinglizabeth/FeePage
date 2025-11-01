@@ -6,52 +6,35 @@ import Card3 from "../assets/images/card-3.png";
 export default function FeeStructure() {
   const [rate, setRate] = useState(null); // store exchange rate
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
   const fees = [{ image: Card1 }, { image: Card2 }, { image: Card3 }];
 
   // Fetch exchange rate from backend
   useEffect(() => {
-    const fetchRate = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(
-          "https://swaptagbackend.onrender.com/api/exchange",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              from_currency: "USD",
-              to_currency: "NGN",
-              amount: 100,
-            }),
-          }
-        );
-
-        if (!response.ok) throw new Error("Failed to fetch exchange rate");
-
-        const result = await response.json();
-        setRate(result.fx_rate || 0);
-      } catch (err) {
-        console.error("Error fetching rate:", err);
-        setError("Unable to fetch exchange rate. Please try again later.");
-      } finally {
+    fetch(
+      "https://2kbbumlxz3.execute-api.us-east-1.amazonaws.com/default/exchange?from=USD&to=NGN"
+    )
+      .then((res) => res.json())
+      .then((data) => {
+        // assuming API returns { rate: <number> }
+        setRate(data.rate || 0);
         setLoading(false);
-      }
-    };
-
-    fetchRate();
+      })
+      .catch((err) => {
+        console.error("Failed to fetch rate:", err);
+        setLoading(false);
+      });
   }, []);
 
-  // Example: simulate a swap
+  // Example: simulate a swap (you can call this on demand)
   const simulateSwap = async (amount = 100, from = "USD", to = "NGN", swap_tag) => {
     try {
       const response = await fetch(
-        "https://swaptagbackend.onrender.com/api/exchange",
+        "https://your-backend-domain.com/api/simulate",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ amount, from_currency: from, to_currency: to, swap_tag }),
+          body: JSON.stringify({ amount, from, to, swap_tag })
         }
       );
       const result = await response.json();
@@ -67,7 +50,6 @@ export default function FeeStructure() {
       className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-blue-50"
     >
       <div className="max-w-6xl mx-auto">
-        {/* Header Section */}
         <div className="text-center mb-14">
           <h2 className="text-3xl sm:text-4xl font-bold text-blue-800 mb-3">
             Simple Fee Structure
@@ -75,11 +57,8 @@ export default function FeeStructure() {
           <p className="text-gray-600 text-base sm:text-lg">
             Clear, competitive rates for all your currency exchange needs
           </p>
-
           {loading ? (
             <p className="text-gray-500 mt-2">Fetching current exchange rate...</p>
-          ) : error ? (
-            <p className="text-red-600 mt-2">{error}</p>
           ) : (
             <p className="text-gray-700 mt-2">
               Current USD → NGN Rate: <strong>{rate}</strong>
@@ -87,12 +66,11 @@ export default function FeeStructure() {
           )}
         </div>
 
-        {/* Fee Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {fees.map((fee, index) => (
             <div
               key={index}
-              className="rounded-2xl transition-all hover:-translate-y-1 flex flex-col items-center justify-center w-full h-80 bg-white shadow"
+              className="rounded-2xl transition-all hover:-translate-y-1 flex flex-col items-center justify-center w-full h-80"
             >
               <img
                 src={fee.image}
@@ -101,16 +79,6 @@ export default function FeeStructure() {
               />
             </div>
           ))}
-        </div>
-
-        {/* Button Section */}
-        <div className="text-center mt-8">
-          <button
-            onClick={() => simulateSwap(200, "USD", "NGN")}
-            className="bg-blue-700 text-white px-6 py-2 rounded-xl hover:bg-blue-800 transition"
-          >
-            Test Calculator
-          </button>
         </div>
       </div>
     </section>
