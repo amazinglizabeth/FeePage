@@ -70,9 +70,9 @@ export default function ExchangeCalculator() {
     ? (baseAmount * totalFeePercent) / 200 // 50% discount
     : (baseAmount * totalFeePercent) / 100;
   const fxRate = exchangeData?.fx_rate || 1;
-  const received = exchangeData?.converted_amount
-    ? exchangeData.converted_amount
-    : (baseAmount - totalFee) * fxRate;
+
+  // Always recalculate received amount to account for VITAL discount
+  const received = (baseAmount - totalFee) * fxRate;
 
   // Helper to get currency symbol
   const getSymbol = (currency) =>
@@ -225,14 +225,18 @@ export default function ExchangeCalculator() {
                           {holdVital ? (
                             <>
                               <span className="line-through text-gray-400 mr-2">
-                                {totalFeePercent.toFixed(2)}%
+                                {getSymbol(fromCurrency)}
+                                {((baseAmount * totalFeePercent) / 100).toFixed(
+                                  2
+                                )}
                               </span>
                               <span className="text-green-600">
-                                {(totalFeePercent / 2).toFixed(2)}%
+                                {getSymbol(fromCurrency)}
+                                {totalFee.toFixed(2)}
                               </span>
                             </>
                           ) : (
-                            `${totalFeePercent.toFixed(2)}%`
+                            `${getSymbol(fromCurrency)}${totalFee.toFixed(2)}`
                           )}
                         </span>
                       </div>
