@@ -73,7 +73,7 @@ export default function VirtualCard() {
                   <div className="text-lg font-semibold">{card.type}</div>
                 </div>
 
-                <div className="text-xl tracking-widest font-mono">
+                <div className="text-md md:text-xl tracking-widest font-mono">
                   {card.number}
                 </div>
 
