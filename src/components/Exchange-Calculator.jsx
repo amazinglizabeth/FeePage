@@ -18,7 +18,7 @@ export default function ExchangeCalculator() {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch("https://swaptagbackend.onrender.com/api/exchange", {
+      const response = await fetch("https://api.exchangerate-api.com/v4/latest/USD"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
