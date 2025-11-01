@@ -61,17 +61,17 @@ export default function ExchangeCalculator() {
     setToCurrency(fromCurrency);
   };
 
-  // Calculation based on API data and VITAL token discount
+  // Calculation based on API data with FIXED fee (not percentage-based)
   const baseAmount = parseFloat(amount) || 0;
-  const serviceFeePercent = exchangeData?.service_fee || 0;
-  const productFeePercent = exchangeData?.product_fee || 0;
-  const totalFeePercent = serviceFeePercent + productFeePercent;
-  const totalFee = holdVital
-    ? exchangeData?.flat_fee / 2 // 50% discount on flat fee
-    : exchangeData?.flat_fee;
   const fxRate = exchangeData?.fx_rate || 1;
 
-  // Always recalculate received amount to account for VITAL discount
+  // Use flat fee from backend if available, otherwise default to 0
+  const flatFee = exchangeData?.flat_fee || exchangeData?.service_fee || 0;
+
+  // Apply VITAL discount to the flat fee
+  const totalFee = holdVital ? flatFee / 2 : flatFee;
+
+  // Calculate received amount with flat fee
   const received = (baseAmount - totalFee) * fxRate;
 
   // Helper to get currency symbol
@@ -226,9 +226,7 @@ export default function ExchangeCalculator() {
                             <>
                               <span className="line-through text-gray-400 mr-2">
                                 {getSymbol(fromCurrency)}
-                                {((baseAmount * totalFeePercent) / 100).toFixed(
-                                  2
-                                )}
+                                {flatFee.toFixed(2)}
                               </span>
                               <span className="text-green-600">
                                 {getSymbol(fromCurrency)}
