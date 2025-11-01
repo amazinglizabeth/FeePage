@@ -67,7 +67,7 @@ export default function ExchangeCalculator() {
   const productFeePercent = exchangeData?.product_fee || 0;
   const totalFeePercent = serviceFeePercent + productFeePercent;
   const totalFee = holdVital
-    ? (baseAmount * totalFeePercent) / 200
+    ? (baseAmount * totalFeePercent) / 200 // 50% discount
     : (baseAmount * totalFeePercent) / 100;
   const fxRate = exchangeData?.fx_rate || 1;
   const received = exchangeData?.converted_amount
@@ -225,14 +225,14 @@ export default function ExchangeCalculator() {
                           {holdVital ? (
                             <>
                               <span className="line-through text-gray-400 mr-2">
-                                {totalFeePercent.toFixed(2)}$
+                                {totalFeePercent.toFixed(2)}%
                               </span>
                               <span className="text-green-600">
-                                {(totalFeePercent / 2).toFixed(2)}$
+                                {(totalFeePercent / 2).toFixed(2)}%
                               </span>
                             </>
                           ) : (
-                            `${totalFeePercent.toFixed(2)}$`
+                            `${totalFeePercent.toFixed(2)}%`
                           )}
                         </span>
                       </div>
