@@ -9,7 +9,7 @@ export default function ExchangeCalculator() {
   // Example exchange rates (you can replace with live API later)
   const rates = {
     NGN: { USD: 0.0012, EUR: 0.0011 },
-    USD: { NGN: 1600, EUR: 0.93 },
+    USD: { NGN: 1480, EUR: 0.93 },
     EUR: { NGN: 1700, USD: 1.08 },
   };
 
