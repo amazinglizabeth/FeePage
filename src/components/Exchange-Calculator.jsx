@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { FaExchangeAlt } from "react-icons/fa";
 
 export default function ExchangeCalculator() {
   const [amount, setAmount] = useState("");
@@ -11,11 +10,7 @@ export default function ExchangeCalculator() {
   const [error, setError] = useState("");
 
   // Fetch exchange rate dynamically from backend
-  const fetchExchangeData = async (
-    amt = amount,
-    from = fromCurrency,
-    to = toCurrency
-  ) => {
+  const fetchExchangeData = async (amt = amount, from = fromCurrency, to = toCurrency) => {
     if (!amt || isNaN(amt) || parseFloat(amt) <= 0) {
       setExchangeData(null);
       return;
@@ -23,18 +18,15 @@ export default function ExchangeCalculator() {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch(
-        "https://swaptagbackend.onrender.com/api/exchange",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            from_currency: from,
-            to_currency: to,
-            amount: parseFloat(amt),
-          }),
-        }
-      );
+      const response = await fetch("https://swaptagbackend.onrender.com/api/exchange", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          from_currency: from,
+          to_currency: to,
+          amount: parseFloat(amt),
+        }),
+      });
 
       if (!response.ok) throw new Error("Failed to fetch exchange data.");
 
@@ -63,8 +55,9 @@ export default function ExchangeCalculator() {
 
   // Calculation based on API data and VITAL token discount
   const baseAmount = parseFloat(amount) || 0;
-  const exchangeFeePercent = exchangeData?.exchange_fee || 0;
-  const totalFeePercent = exchangeFeePercent;
+  const serviceFeePercent = exchangeData?.service_fee || 0;
+  const productFeePercent = exchangeData?.product_fee || 0;
+  const totalFeePercent = serviceFeePercent + productFeePercent;
   const totalFee = holdVital
     ? (baseAmount * totalFeePercent) / 200 // 50% discount
     : (baseAmount * totalFeePercent) / 100;
@@ -178,7 +171,7 @@ export default function ExchangeCalculator() {
                     className="absolute right-1/2 translate-x-1/2 -bottom-6 bg-blue-600 text-white rounded-full p-2 shadow-lg hover:bg-blue-700 transition-transform hover:scale-105"
                     title="Swap Currencies"
                   >
-                    <FaExchangeAlt size={20} />
+                    🔁
                   </button>
                 </div>
 
@@ -248,9 +241,7 @@ export default function ExchangeCalculator() {
                       </div>
                     </div>
                   ) : (
-                    <p className="text-gray-500">
-                      Enter amount to calculate exchange.
-                    </p>
+                    <p className="text-gray-500">Enter amount to calculate exchange.</p>
                   )}
 
                   <p className="text-xs text-gray-500 italic mt-6 pt-4 border-t border-blue-100">
