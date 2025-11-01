@@ -67,8 +67,8 @@ export default function ExchangeCalculator() {
   const productFeePercent = exchangeData?.product_fee || 0;
   const totalFeePercent = serviceFeePercent + productFeePercent;
   const totalFee = holdVital
-    ? (baseAmount * totalFeePercent) / 200 // 50% discount
-    : (baseAmount * totalFeePercent) / 100;
+    ? exchangeData?.flat_fee / 2 // 50% discount on flat fee
+    : exchangeData?.flat_fee;
   const fxRate = exchangeData?.fx_rate || 1;
 
   // Always recalculate received amount to account for VITAL discount
