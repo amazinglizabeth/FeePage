@@ -63,9 +63,8 @@ export default function ExchangeCalculator() {
 
   // Calculation based on API data and VITAL token discount
   const baseAmount = parseFloat(amount) || 0;
-  const serviceFeePercent = exchangeData?.service_fee || 0;
-  const productFeePercent = exchangeData?.product_fee || 0;
-  const totalFeePercent = serviceFeePercent + productFeePercent;
+  const exchangeFeePercent = exchangeData?.exchange_fee || 0;
+  const totalFeePercent = exchangeFeePercent;
   const totalFee = holdVital
     ? (baseAmount * totalFeePercent) / 200 // 50% discount
     : (baseAmount * totalFeePercent) / 100;
