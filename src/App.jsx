@@ -6,11 +6,11 @@ import VirtualCard from "@/components/VirtualCard.jsx";
 import WhereYourFeesGo from "@/components/Where-your-fees-go.jsx";
 import FAQ from "@/components/FAQ.jsx";
 import Referrals from "@/components/Referrals.jsx";
-import Testimonials from "@/components/Testimonials";
-import TrustLogo from "./components/TrustLogo";
+import Testimonials from "@/components/Testimonials.jsx";
+import TrustLogo from "@/components/TrustLogo.jsx";
 import Cta from "@/components/Cta.jsx";
 import Footer from "@/components/Footer.jsx";
-import ChatterBox from "./components/ChatterBox";
+import ChatterBox from "@/components/ChatterBox";
 
 export default function App() {
   return (
