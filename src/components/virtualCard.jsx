@@ -25,7 +25,7 @@ export default function VirtualCard() {
       name: "Amanda Rodriguez",
       number: "5061 2345 6789 0123",
       expiry: "03/28",
-      gradient: "from-green-500 to-emerald-600",
+      gradient: "from-green-500 to-emerald-500",
       textColor: "text-white",
     },
   ];
