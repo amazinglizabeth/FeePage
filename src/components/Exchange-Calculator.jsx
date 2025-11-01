@@ -9,7 +9,7 @@ export default function ExchangeCalculator() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const BACKEND_URL = "https://swaptagbackend.onrender.com/api/simulate";
+  const BACKEND_URL = "https://swaptagbackend.onrender.com/api/Exchange";
 
   // Call backend /api/simulate when user clicks "Calculate"
   async function handleCalculate() {
