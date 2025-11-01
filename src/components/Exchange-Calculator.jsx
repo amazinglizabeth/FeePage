@@ -39,13 +39,7 @@ export default function FeeCalculator() {
       setLoading(false);
     }
   };
-  useEffect(() => {
-  fetch("https://swaptagbackend.onrender.com/api/fees")
-    .then(res => res.json())
-    .then(data => setFxRate(data))
-}, [])
-
-
+  
   return (
     <section className="flex flex-col items-center p-6 bg-white shadow rounded-2xl max-w-md mx-auto">
       <h2 className="text-xl font-semibold mb-4 text-gray-800">Fee & FX Calculator</h2>
