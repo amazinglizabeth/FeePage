@@ -9,38 +9,67 @@ export default function ExchangeCalculator() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  // Make sure this matches your deployed backend
   const BACKEND_URL = "https://swaptagbackend.onrender.com/api/exchange";
 
-  // Call backend /api/simulate when user clicks "Calculate"
   async function handleCalculate() {
     setLoading(true);
     setError(null);
     setResult(null);
+
+    const amt = parseFloat(amount);
+    if (Number.isNaN(amt) || amt <= 0) {
+      setError("Please enter a valid amount greater than 0.");
+      setLoading(false);
+      return;
+    }
 
     try {
       const res = await fetch(BACKEND_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          amount: parseFloat(amount),
+          amount: amt,
           from: fromCurrency,
-          to: toCurrency
+          to: toCurrency,
+          // optional swap tag
+          swap_tag: "TEAMEX"
         }),
       });
 
-      if (!res.ok) throw new Error("Backend error");
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`Backend error: ${res.status} ${errText}`);
+      }
 
       const data = await res.json();
 
-      // Apply VITAL discount client-side (optional)
-      if (holdVital && data.fee_details) {
-        data.fee_details.total_fee *= 0.5;
-        data.converted_amount =
-          (data.input.amount - data.fee_details.total_fee) *
-          data.exchange_rate;
+      // Ensure the response matches expected keys
+      // Our backend returns: input, exchange_rate, fee_details, converted_amount
+      let feeDetails = data.fee_details || data.fees || { total_fee: 0, fixed_fee: 0, percent_fee: 0 };
+      // If percent/fixed exist but not total, compute:
+      if (feeDetails.total_fee === undefined) {
+        const percent = parseFloat(feeDetails.percent_fee || 0);
+        const fixed = parseFloat(feeDetails.fixed_fee || 0);
+        feeDetails.total_fee = Math.round(((percent * amt) + fixed) * 100) / 100;
       }
 
-      setResult(data);
+      // Apply VITAL discount client-side if selected
+      if (holdVital) {
+        const discountedFee = Math.round((feeDetails.total_fee * 0.5) * 100) / 100;
+        feeDetails = { ...feeDetails, total_fee: discountedFee };
+        // recompute converted amount using returned exchange_rate
+        const net = Math.max(0, amt - discountedFee);
+        data.converted_amount = Math.round(net * data.exchange_rate * 100) / 100;
+      }
+
+      // normalize into one result object we store
+      setResult({
+        input: data.input || { amount: amt, from: fromCurrency, to: toCurrency },
+        exchange_rate: data.exchange_rate || 1,
+        fee_details: feeDetails,
+        converted_amount: data.converted_amount
+      });
     } catch (err) {
       console.error("Simulation failed:", err);
       setError("Failed to fetch simulation data");
@@ -49,6 +78,7 @@ export default function ExchangeCalculator() {
     }
   }
 
+  // --- rest of component markup unchanged; when rendering use `result` as before ---
   return (
     <section
       id="calculator"
@@ -123,7 +153,7 @@ export default function ExchangeCalculator() {
 
                 <button
                   onClick={handleCalculate}
-                  disabled={!amount || loading}
+                  disabled={loading}
                   className="mt-8 w-full py-4 bg-blue-600 text-white rounded-xl text-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition"
                 >
                   {loading ? "Calculating..." : "Calculate Exchange"}
@@ -196,7 +226,7 @@ export default function ExchangeCalculator() {
             </div>
           </div>
         </div>
-      </div>
+      </div> 
     </section>
   );
 }
