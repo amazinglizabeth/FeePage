@@ -10,7 +10,7 @@ import TrustLogo from "@/components/TrustLogo.jsx";
 import Cta from "@/components/Cta.jsx";
 import Footer from "@/components/Footer.jsx";
 import ChatterBox from "@/components/ChatterBox.jsx";
-import VirtualCard from "./components/VirtualCard";
+import VirtualCard from "./components/VirtualCard.jsx";
 
 export default function App() {
   return (
