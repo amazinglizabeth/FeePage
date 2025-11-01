@@ -36,7 +36,7 @@ export default function ChatterBox() {
       const data = await res.json();
       const botMsg = {
         sender: "bot",
-        text: data.reply || "I couldn't process that.",
+        text: data.response || "I couldn't process that.",
       };
       setChat((prev) => [...prev, botMsg]);
     } catch (error) {
