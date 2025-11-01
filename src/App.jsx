@@ -10,7 +10,7 @@ import Testimonials from "@/components/Testimonials.jsx";
 import TrustLogo from "@/components/TrustLogo.jsx";
 import Cta from "@/components/Cta.jsx";
 import Footer from "@/components/Footer.jsx";
-import ChatterBox from "@/components/ChatterBox";
+import ChatterBox from "@/components/ChatterBox.jsx";
 
 export default function App() {
   return (
