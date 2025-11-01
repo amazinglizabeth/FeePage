@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function FeeCalculator() {
   const [fromCurrency, setFromCurrency] = useState("USD");
@@ -19,15 +19,18 @@ export default function FeeCalculator() {
     setResult(null);
 
     try {
-      const response = await fetch("https://swaptagbackend.onrender.com/api/exchange", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          from_currency: fromCurrency,
-          to_currency: toCurrency,
-          amount: parseFloat(amount),
-        }),
-      });
+      const response = await fetch(
+        "https://swaptagbackend.onrender.com/api/exchange",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            from_currency: fromCurrency,
+            to_currency: toCurrency,
+            amount: parseFloat(amount),
+          }),
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to fetch calculation data");
 
@@ -40,15 +43,16 @@ export default function FeeCalculator() {
     }
   };
   useEffect(() => {
-  fetch("https://swaptagbackend.onrender.com/api/fees")
-    .then(res => res.json())
-    .then(data => setFxRate(data))
-}, [])
-
+    fetch("https://swaptagbackend.onrender.com/api/fees")
+      .then((res) => res.json())
+      .then((data) => setFxRate(data));
+  }, []);
 
   return (
     <section className="flex flex-col items-center p-6 bg-white shadow rounded-2xl max-w-md mx-auto">
-      <h2 className="text-xl font-semibold mb-4 text-gray-800">Fee & FX Calculator</h2>
+      <h2 className="text-xl font-semibold mb-4 text-gray-800">
+        Fee & FX Calculator
+      </h2>
 
       <div className="w-full space-y-3">
         <input
@@ -95,11 +99,21 @@ export default function FeeCalculator() {
 
         {result && (
           <div className="mt-4 p-3 bg-gray-50 rounded-lg border">
-            <p><strong>FX Rate:</strong> {result.fx_rate}</p>
-            <p><strong>Service Fee:</strong> {result.service_fee}%</p>
-            <p><strong>Product Fee:</strong> {result.product_fee}%</p>
-            <p><strong>Converted Amount:</strong> {result.converted_amount}</p>
-            <p><strong>Total Payable:</strong> {result.total_amount}</p>
+            <p>
+              <strong>FX Rate:</strong> {result.fx_rate}
+            </p>
+            <p>
+              <strong>Service Fee:</strong> {result.service_fee}%
+            </p>
+            <p>
+              <strong>Product Fee:</strong> {result.product_fee}%
+            </p>
+            <p>
+              <strong>Converted Amount:</strong> {result.converted_amount}
+            </p>
+            <p>
+              <strong>Total Payable:</strong> {result.total_amount}
+            </p>
           </div>
         )}
       </div>
