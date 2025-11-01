@@ -4,15 +4,15 @@ import Card2 from "../assets/images/card-2.png";
 import Card3 from "../assets/images/card-3.png";
 
 export default function FeeStructure() {
-  const [data, setData] = useState(null); // store fx and fees
+  const [rate, setRate] = useState(null); // store exchange rate
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const fees = [{ image: Card1 }, { image: Card2 }, { image: Card3 }];
 
-  // Fetch exchange rate & fees from backend
+  // Fetch exchange rate from backend
   useEffect(() => {
-    const fetchExchangeData = async () => {
+    const fetchRate = async () => {
       setLoading(true);
       try {
         const response = await fetch(
@@ -28,34 +28,34 @@ export default function FeeStructure() {
           }
         );
 
-        if (!response.ok) throw new Error("Failed to fetch data from backend");
+        if (!response.ok) throw new Error("Failed to fetch exchange rate");
 
         const result = await response.json();
-        setData(result);
+        setRate(result.fx_rate || 0);
       } catch (err) {
-        console.error("Backend fetch failed:", err);
-        setError("Unable to fetch exchange rate and fees. Try again later.");
+        console.error("Error fetching rate:", err);
+        setError("Unable to fetch exchange rate. Please try again later.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchExchangeData();
+    fetchRate();
   }, []);
 
-  // Example calculator function (for testing)
-  const simulateSwap = async (amount = 200, from = "USD", to = "NGN") => {
+  // Example: simulate a swap
+  const simulateSwap = async (amount = 100, from = "USD", to = "NGN", swap_tag) => {
     try {
       const response = await fetch(
         "https://swaptagbackend.onrender.com/api/exchange",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ from_currency: from, to_currency: to, amount }),
+          body: JSON.stringify({ amount, from_currency: from, to_currency: to, swap_tag }),
         }
       );
       const result = await response.json();
-      console.log("Calculator simulation result:", result);
+      console.log("Swap simulation:", result);
     } catch (error) {
       console.error("Simulation failed:", error);
     }
@@ -67,6 +67,7 @@ export default function FeeStructure() {
       className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-blue-50"
     >
       <div className="max-w-6xl mx-auto">
+        {/* Header Section */}
         <div className="text-center mb-14">
           <h2 className="text-3xl sm:text-4xl font-bold text-blue-800 mb-3">
             Simple Fee Structure
@@ -76,32 +77,17 @@ export default function FeeStructure() {
           </p>
 
           {loading ? (
-            <p className="text-gray-500 mt-2">Fetching current data...</p>
+            <p className="text-gray-500 mt-2">Fetching current exchange rate...</p>
           ) : error ? (
             <p className="text-red-600 mt-2">{error}</p>
-          ) : data ? (
-            <div className="text-gray-700 mt-4 space-y-2">
-              <p>
-                💱 <strong>FX Rate:</strong> {data.fx_rate}
-              </p>
-              <p>
-                💰 <strong>Service Fee:</strong> {data.service_fee}%
-              </p>
-              <p>
-                🧾 <strong>Product Fee:</strong> {data.product_fee}%
-              </p>
-              <p>
-                📊 <strong>Converted Amount:</strong>{" "}
-                {data.converted_amount?.toLocaleString()}
-              </p>
-              <p>
-                💵 <strong>Total Payable:</strong>{" "}
-                {data.total_amount?.toLocaleString()}
-              </p>
-            </div>
-          ) : null}
+          ) : (
+            <p className="text-gray-700 mt-2">
+              Current USD → NGN Rate: <strong>{rate}</strong>
+            </p>
+          )}
         </div>
 
+        {/* Fee Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {fees.map((fee, index) => (
             <div
@@ -117,6 +103,7 @@ export default function FeeStructure() {
           ))}
         </div>
 
+        {/* Button Section */}
         <div className="text-center mt-8">
           <button
             onClick={() => simulateSwap(200, "USD", "NGN")}
