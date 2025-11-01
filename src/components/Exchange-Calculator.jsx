@@ -1,232 +1,108 @@
 import { useState } from "react";
 
-export default function ExchangeCalculator() {
-  const [amount, setAmount] = useState("");
+export default function FeeCalculator() {
   const [fromCurrency, setFromCurrency] = useState("USD");
   const [toCurrency, setToCurrency] = useState("NGN");
-  const [holdVital, setHoldVital] = useState(false);
+  const [amount, setAmount] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
 
-  // Make sure this matches your deployed backend
-  const BACKEND_URL = "https://swaptagbackend.onrender.com/api/exchange";
-
-  async function handleCalculate() {
-    setLoading(true);
-    setError(null);
-    setResult(null);
-
-    const amt = parseFloat(amount);
-    if (Number.isNaN(amt) || amt <= 0) {
-      setError("Please enter a valid amount greater than 0.");
-      setLoading(false);
+  const handleCalculate = async () => {
+    if (!amount) {
+      setError("Please enter an amount");
       return;
     }
 
+    setLoading(true);
+    setError("");
+    setResult(null);
+
     try {
-      const res = await fetch(BACKEND_URL, {
+      const response = await fetch("https://swaptagbackend.onrender.com/api/exchange", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          amount: amt,
-          from: fromCurrency,
-          to: toCurrency,
-          // optional swap tag
-          swap_tag: "TEAMEX"
+          from_currency: fromCurrency,
+          to_currency: toCurrency,
+          amount: parseFloat(amount),
         }),
       });
 
-      if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(`Backend error: ${res.status} ${errText}`);
-      }
+      if (!response.ok) throw new Error("Failed to fetch calculation data");
 
-      const data = await res.json();
-
-      // Ensure the response matches expected keys
-      // Our backend returns: input, exchange_rate, fee_details, converted_amount
-      let feeDetails = data.fee_details || data.fees || { total_fee: 0, fixed_fee: 0, percent_fee: 0 };
-      // If percent/fixed exist but not total, compute:
-      if (feeDetails.total_fee === undefined) {
-        const percent = parseFloat(feeDetails.percent_fee || 0);
-        const fixed = parseFloat(feeDetails.fixed_fee || 0);
-        feeDetails.total_fee = Math.round(((percent * amt) + fixed) * 100) / 100;
-      }
-
-      // Apply VITAL discount client-side if selected
-      if (holdVital) {
-        const discountedFee = Math.round((feeDetails.total_fee * 0.5) * 100) / 100;
-        feeDetails = { ...feeDetails, total_fee: discountedFee };
-        // recompute converted amount using returned exchange_rate
-        const net = Math.max(0, amt - discountedFee);
-        data.converted_amount = Math.round(net * data.exchange_rate * 100) / 100;
-      }
-
-      // normalize into one result object we store
-      setResult({
-        input: data.input || { amount: amt, from: fromCurrency, to: toCurrency },
-        exchange_rate: data.exchange_rate || 1,
-        fee_details: feeDetails,
-        converted_amount: data.converted_amount
-      });
+      const data = await response.json();
+      setResult(data);
     } catch (err) {
-      console.error("Simulation failed:", err);
-      setError("Failed to fetch simulation data");
+      setError(err.message);
     } finally {
       setLoading(false);
     }
-  }
+  };
+  useEffect(() => {
+  fetch("https://swaptagbackend.onrender.com/api/fees")
+    .then(res => res.json())
+    .then(data => setFxRate(data))
+}, [])
 
-  // --- rest of component markup unchanged; when rendering use `result` as before ---
+
   return (
-    <section
-      id="calculator"
-      className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 to-indigo-50"
-    >
-      <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl sm:text-5xl font-bold text-blue-800 mb-4">
-            Exchange Calculator
-          </h2>
-          <p className="text-gray-600 text-md sm:text-xl">
-            Estimate your exchange and see fees in real time
-          </p>
+    <section className="flex flex-col items-center p-6 bg-white shadow rounded-2xl max-w-md mx-auto">
+      <h2 className="text-xl font-semibold mb-4 text-gray-800">Fee & FX Calculator</h2>
+
+      <div className="w-full space-y-3">
+        <input
+          type="number"
+          placeholder="Enter amount"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          className="w-full border p-2 rounded-lg"
+        />
+
+        <div className="flex gap-2">
+          <select
+            value={fromCurrency}
+            onChange={(e) => setFromCurrency(e.target.value)}
+            className="flex-1 border p-2 rounded-lg"
+          >
+            <option>USD</option>
+            <option>NGN</option>
+            <option>GBP</option>
+            <option>CAD</option>
+          </select>
+
+          <select
+            value={toCurrency}
+            onChange={(e) => setToCurrency(e.target.value)}
+            className="flex-1 border p-2 rounded-lg"
+          >
+            <option>NGN</option>
+            <option>USD</option>
+            <option>GBP</option>
+            <option>CAD</option>
+          </select>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden">
-          <div className="p-8 sm:p-10">
-            <div className="flex flex-col lg:flex-row gap-8">
-              {/* Left Side - Inputs */}
-              <div className="flex-1">
-                <div className="mb-8">
-                  <h3 className="text-xl font-bold text-gray-800 mb-4">
-                    Amount to Exchange
-                  </h3>
-                  <input
-                    type="number"
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    placeholder="Enter amount"
-                    className="w-full px-5 py-4 text-lg border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                  />
-                </div>
+        <button
+          onClick={handleCalculate}
+          className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+          disabled={loading}
+        >
+          {loading ? "Calculating..." : "Calculate"}
+        </button>
 
-                <div className="mb-8">
-                  <h3 className="text-xl font-bold text-gray-800 mb-4">
-                    Currency Selection
-                  </h3>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <select
-                      value={fromCurrency}
-                      onChange={(e) => setFromCurrency(e.target.value)}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    >
-                      <option value="USD">US Dollar ($)</option>
-                      <option value="NGN">Nigerian Naira (₦)</option>
-                      <option value="EUR">Euro (€)</option>
-                    </select>
+        {error && <p className="text-red-600 mt-2 text-sm">{error}</p>}
 
-                    <select
-                      value={toCurrency}
-                      onChange={(e) => setToCurrency(e.target.value)}
-                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    >
-                      <option value="NGN">Nigerian Naira (₦)</option>
-                      <option value="USD">US Dollar ($)</option>
-                      <option value="EUR">Euro (€)</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="flex items-center space-x-3 p-4 bg-blue-50 rounded-xl border border-blue-100">
-                  <input
-                    type="checkbox"
-                    checked={holdVital}
-                    onChange={() => setHoldVital(!holdVital)}
-                    className="w-5 h-5 accent-blue-600"
-                  />
-                  <span className="text-sm font-medium text-blue-800">
-                    I hold VITAL tokens (50% fee discount)
-                  </span>
-                </div>
-
-                <button
-                  onClick={handleCalculate}
-                  disabled={loading}
-                  className="mt-8 w-full py-4 bg-blue-600 text-white rounded-xl text-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition"
-                >
-                  {loading ? "Calculating..." : "Calculate Exchange"}
-                </button>
-
-                {error && (
-                  <p className="text-red-500 text-sm mt-4">{error}</p>
-                )}
-              </div>
-
-              {/* Divider */}
-              <div className="hidden lg:block border-l border-gray-200"></div>
-
-              {/* Right Side - Results */}
-              <div className="lg:w-2/5">
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-200 shadow-sm h-full">
-                  <h3 className="text-xl font-bold text-blue-900 mb-6 pb-3 border-b border-blue-200">
-                    Exchange Summary
-                  </h3>
-
-                  {!result ? (
-                    <p className="text-gray-500">
-                      {loading ? "Calculating..." : "Enter details and click Calculate"}
-                    </p>
-                  ) : (
-                    <div className="space-y-4 mb-6">
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-700">Exchange Rate:</span>
-                        <span className="font-semibold text-blue-700">
-                          1 {fromCurrency} = {result.exchange_rate.toFixed(3)}{" "}
-                          {toCurrency}
-                        </span>
-                      </div>
-
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-700">Total Fee:</span>
-                        <span className="font-semibold text-blue-600">
-                          {fromCurrency === "NGN"
-                            ? "₦"
-                            : fromCurrency === "USD"
-                            ? "$"
-                            : "€"}
-                          {result.fee_details.total_fee.toFixed(2)}
-                        </span>
-                      </div>
-
-                      <div className="pt-4 border-t border-blue-200">
-                        <div className="flex justify-between items-center">
-                          <span className="text-lg font-bold text-gray-800">
-                            You'll Receive:
-                          </span>
-                          <span className="text-2xl font-bold text-green-600">
-                            {toCurrency === "NGN"
-                              ? "₦"
-                              : toCurrency === "USD"
-                              ? "$"
-                              : "€"}
-                            {result.converted_amount.toFixed(2)}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  <p className="text-xs text-gray-500 italic mt-6 pt-4 border-t border-blue-100">
-                    *Estimates are based on live VitalSwap rates and may vary slightly.
-                  </p>
-                </div>
-              </div>
-            </div>
+        {result && (
+          <div className="mt-4 p-3 bg-gray-50 rounded-lg border">
+            <p><strong>FX Rate:</strong> {result.fx_rate}</p>
+            <p><strong>Service Fee:</strong> {result.service_fee}%</p>
+            <p><strong>Product Fee:</strong> {result.product_fee}%</p>
+            <p><strong>Converted Amount:</strong> {result.converted_amount}</p>
+            <p><strong>Total Payable:</strong> {result.total_amount}</p>
           </div>
-        </div>
-      </div> 
+        )}
+      </div>
     </section>
   );
 }
